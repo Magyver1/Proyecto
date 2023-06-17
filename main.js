@@ -1,16 +1,18 @@
 // Variable global para almacenar el nombre
 let nombre;
 
-// Función para calcular el préstamo
-function calcularPrestamo() {
-    // Ciclo para solicitar un nombre válido
+// Función para solicitar el nombre
+function solicitarNombre() {
     do {
         nombre = prompt("Hola, ingrese su nombre por favor:");
         if (nombre === "") {
             alert("¡Ingrese un nombre válido!");
         }
     } while (nombre === "");
+}
 
+// Función para calcular el préstamo
+function calcularPrestamo() {
     let monto, tasa, plazo;
 
     // Ciclo para solicitar un monto numérico válido
@@ -69,17 +71,86 @@ function calcularCostoTotal(pagosMensuales, plazo) {
     return costoTotal;
 }
 
-// Ciclo para solicitar y calcular múltiples préstamos
-let respuesta;
+// Función para convertir de dólares a soles
+function convertirDolaresASoles(dolares, tipoCambio) {
+    return dolares * tipoCambio;
+}
 
-do {
-    calcularPrestamo();
-    respuesta = prompt("¿Desea calcular otro préstamo? (S/N)").toLowerCase();
-    
-    if (respuesta !== "s" && respuesta !== "n") {
-        alert("¡Ingrese el carácter correcto! Por favor, ingrese 'S' para sí o 'N' para no.");
-    }
-} while (respuesta !== "n");
+// Función para convertir de soles a dólares
+function convertirSolesADolares(soles, tipoCambio) {
+    return soles / tipoCambio;
+}
 
-// Mensaje de despedida
-alert("Gracias por utilizar nuestro sistema de préstamos. ¡Vuelva pronto!");
+// Función para mostrar el menú de selección
+function mostrarMenu() {
+    let opcion;
+
+    do {
+        opcion = prompt(`Hola ${nombre}, selecciona una de las opciones ingresando el número correspondiente: 
+        Menú:
+        1. Calcular un préstamo
+        2. Convertir de dólares a soles
+        3. Convertir de soles a dólares
+        4. Salir`);
+
+        switch (opcion) {
+            case "1":
+                // Lógica para calcular préstamo
+                calcularPrestamo();
+                break;
+            case "2":
+                // Lógica para convertir de dólares a soles
+                let dolares;
+                let validInputDolares = false;
+
+                do {
+                    let input = prompt("Ingrese la cantidad en dólares a convertir:");
+
+                    if (isNaN(input)) {
+                        alert("¡Ingrese un valor numérico para la cantidad en dólares!");
+                    } else {
+                        dolares = parseFloat(input);
+                        validInputDolares = true;
+                    }
+                } while (!validInputDolares);
+
+                let tipoCambioDolares = 3.7; // Ejemplo: tipo de cambio actual
+                let solesConvertidos = convertirDolaresASoles(dolares, tipoCambioDolares);
+                alert(`${dolares}$ equivale a ${solesConvertidos.toFixed(2)} S/.`);
+                break;
+            case "3":
+                // Lógica para convertir de soles a dólares
+                let soles;
+                let validInputSoles = false;
+
+                do {
+                    let input = prompt("Ingrese la cantidad en soles a convertir:");
+
+                    if (isNaN(input)) {
+                        alert("¡Ingrese un valor numérico para la cantidad en soles!");
+                    } else {
+                        soles = parseFloat(input);
+                        validInputSoles = true;
+                    }
+                } while (!validInputSoles);
+
+                let tipoCambioSoles = 3.7; // Ejemplo: tipo de cambio actual
+                let dolaresConvertidos = convertirSolesADolares(soles, tipoCambioSoles);
+                alert(`${soles} S/. equivale a ${dolaresConvertidos.toFixed(2)}$`);
+                break;
+            case "4":
+                alert(`Gracias por utilizar nuestra calculadora ${nombre}. ¡Vuelve pronto!`);
+                break;
+            default:
+                alert("Ingrese una opción válida");
+        }
+    } while (opcion !== "4");
+}
+
+
+// Llamada a la función para solicitar el nombre
+solicitarNombre();
+
+// Llamada a la función para mostrar el menú
+mostrarMenu();
+
